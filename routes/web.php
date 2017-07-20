@@ -20,7 +20,7 @@ Route::get('/',[
 	'uses'=>'PageController@getTrangchu'
 ]);
 
-Route::get('type',[
+Route::get('type-{id}',[
 	'as'=>'type',
 	'uses'=>'PageController@getProductByType'
 ]);

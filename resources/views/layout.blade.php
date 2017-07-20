@@ -110,11 +110,11 @@
 				<nav class="main-menu">
 					<ul class="l-inline ov">
 						<li><a href="index.html">Trang chủ</a></li>
-						<li><a href="#">Sản phẩm</a>
+						<li><a href="#">Loại sản phẩm</a>
 							<ul class="sub-menu">
-								<li><a href="product_type.html">Sản phẩm 1</a></li>
-								<li><a href="product_type.html">Sản phẩm 2</a></li>
-								<li><a href="product_type.html">Sản phẩm 4</a></li>
+								@foreach($type as $loaisp)
+								<li><a href="{{route('type',$loaisp->id)}}" >{{$loaisp->name}}</a></li>
+								@endforeach 
 							</ul>
 						</li>
 						<li><a href="about.html">Giới thiệu</a></li>
