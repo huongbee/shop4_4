@@ -71,11 +71,13 @@
 					</div>
 					<div class="col-sm-6">
 						<div class="your-order">
-							<div class="your-order-head"><h5>Your Order</h5></div>
+							<div class="your-order-head"><h5>Giỏ hàng</h5></div>
 							<div class="your-order-body">
 								<div class="your-order-item">
 									<div>
+
 									<!--  one item	 -->
+									
 										<div class="media">
 											<img width="35%" src="assets/dest/images/shoping1.jpg" alt="" class="pull-left">
 											<div class="media-body">

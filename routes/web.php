@@ -52,3 +52,14 @@ Route::get('register',[
 	'as'=>'register',
 	'uses'=>'PageController@getRegister'
 ]);
+
+
+Route::get('add-to-cart/{id}',[
+	'as'=>'add_to_cart',
+	'uses'=>'PageController@addToCart'
+]);
+
+Route::get('delete-cart/{id}',[
+	'as'=>'delete_cart',
+	'uses'=>'PageController@deleteCart'
+]);

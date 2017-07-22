@@ -2,9 +2,9 @@
 
 namespace App;
 
-$oldCart = $_SESSION['cart']?$_SESSION['cart']:null;
+/*$oldCart = $_SESSION['cart']?$_SESSION['cart']:null;
 $cart = new Cart($oldCart);
-
+*/
 
 class Cart
 {
@@ -21,17 +21,17 @@ class Cart
 	}
 
 	public function add($item, $id, $qty=1){
-		$giohang = ['qty'=>0, 'price' => 0, 'item' => $item];
+		$sanpham = ['qty'=>0, 'price' => 0, 'item' => $item];
 		if($this->items){
 			if(array_key_exists($id, $this->items)){
-				$giohang = $this->items[$id];
+				$sanpham = $this->items[$id];
 			}
 		}
-		$giohang['qty'] = $giohang['qty'] + $qty;
-		$giohang['price'] = $item->promotion_price * $giohang['qty'];
-		$this->items[$id] = $giohang;
+		$sanpham['qty'] = $sanpham['qty'] + $qty;
+		$sanpham['price'] = $item->promotion_price * $sanpham['qty'];
+		$this->items[$id] = $sanpham;
 		$this->totalQty = $this->totalQty + $qty;
-		$this->totalPrice = ($this->totalPrice + $giohang['item']->promotion_price);
+		$this->totalPrice = ($this->totalPrice + $sanpham['item']->promotion_price);
 		
 	}
 	//xóa 1
@@ -43,6 +43,14 @@ class Cart
 		if($this->items[$id]['qty']<=0){
 			unset($this->items[$id]);
 		}
+	}
+	//tăng 1
+	public function increByOne($id){ 
+		$this->items[$id]['qty']++;
+		$this->items[$id]['price'] += $this->items[$id]['item']['promotion_price'];
+		$this->totalQty++;
+		$this->totalPrice = ($this->totalPrice + $this->items[$id]['item']['promotion_price']);
+		
 	}
 	//xóa nhiều
 	public function removeItem($id){

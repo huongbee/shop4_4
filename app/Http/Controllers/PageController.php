@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Slide;
 use App\Products;
 use App\TypeProduct;
+use Session;
+use App\Cart;
 
 class PageController extends Controller
 {
@@ -67,5 +69,33 @@ class PageController extends Controller
 
     public function getRegister(){
     	return view('pages.register');
+    }
+
+    public function addToCart(Request $req, $id){
+        $product = Products::where('id',$id)->first();
+        if($product){
+            $oldCart = Session::has('cart') ? Session::get('cart') : null;
+            $cart = new Cart($oldCart);
+            $cart->add($product, $id,1);
+            $req->session()->put('cart',$cart);//$_SESSION['cart'] = $cart;
+            return redirect()->back();
+        }
+
+    }
+
+    public function deleteCart(Request $req, $id){
+        $product = Products::where('id',$id)->first();
+        if($product){
+            $oldCart = Session::has('cart') ? Session::get('cart') : null;
+            $cart = new Cart($oldCart);
+            $cart->removeItem($id);
+            if(count($cart->items)>0){
+                $req->session()->put('cart',$cart);//$_SESSION['cart'] = $cart;
+            }
+            else{
+                Session::forget('cart');
+            }
+            return redirect()->back();
+        }
     }
 }
