@@ -32,8 +32,25 @@ class PageController extends Controller
     }
 
 
-    public function getDetailProduct(){
-    	return view('pages.detail');
+    public function getDetailProduct($id){
+        $product = Products::where('id',$id)->first();
+
+        $id_type = $product->id_type;
+        $related_product = Products::where('id_type',$id_type)->paginate(3);
+
+        $best_seller = Products::selectRaw("products.id,products.name,products.promotion_price,products.image, sum(bill_detail.quantity) as tongsoluong")
+                    ->join('bill_detail',function($join){
+                        $join->on('products.id','=','bill_detail.id_product');
+                            
+                    })->groupBy('products.id','products.name','products.promotion_price','products.image')
+                    ->orderBy('tongsoluong','DESC')
+                    ->limit(10)->get();
+
+
+
+        //dd($best_seller);
+
+    	return view('pages.detail',compact('product','related_product','best_seller'));
     }
 
     public function getCheckout(){
