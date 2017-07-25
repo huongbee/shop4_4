@@ -64,7 +64,11 @@ class PageController extends Controller
     }
 
     public function getShoppingCart(){
-    	return view('pages.cart');
+        $cart = Session::has('cart')?Session::get('cart'):null;
+        // if($cart == null){
+        //     return redirect()->route('trangchu');
+        //}
+    	return view('pages.cart',compact('cart'));
     }
 
     public function getRegister(){

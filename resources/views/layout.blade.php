@@ -63,7 +63,7 @@
 							{{-- {{dd($product_cart)}} --}}
 							<div class="beta-dropdown cart-body">
 								@foreach($product_cart as $sanpham)
-								<div class="cart-item">
+								<div class="cart-item" id="del_{{$sanpham['item']->id)}}">
 									<div class="media">
 										<a class="pull-left" href="#"><img src="image/product/{{$sanpham['item']->image}}" alt=""></a>
 										<a class="cart-item-delete" href="{{route('delete_cart',$sanpham['item']->id)}}"><i class="fa fa-times"></i></a>
@@ -82,7 +82,7 @@
 
 									<div class="center">
 										<div class="space10">&nbsp;</div>
-										<a href="{{route('checkout')}}" class="beta-btn primary text-center">Đặt hàng <i class="fa fa-chevron-right"></i></a>
+										<a href="{{route('shoppingcart')}}" class="beta-btn primary text-center">Xem giỏ hàng<i class="fa fa-chevron-right"></i></a>
 									</div>
 								</div>
 							</div>
