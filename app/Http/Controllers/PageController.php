@@ -8,6 +8,10 @@ use App\Products;
 use App\TypeProduct;
 use Session;
 use App\Cart;
+use App\Customer;
+use App\Bills;
+use App\BillDetail;
+use Mail;
 
 class PageController extends Controller
 {
@@ -56,8 +60,87 @@ class PageController extends Controller
     }
 
     public function getCheckout(){
+        $cart = Session::has('cart')?Session::get('cart'):null;
+        if($cart == null){
+            return redirect()->route('trangchu');
+        }
     	return view('pages.checkout');
     }
+
+    public function postCheckout(Request $req){
+
+        $this->validate($req,
+            [
+                'fullname'=>'required|max:30',
+                'address'=>'required',
+                'email'=>'required|email|max:30|min:5',
+                'phone'=>'required|numeric',
+                'payment_method'=>'required',
+            ],
+            [
+                'fullname.required'=>'Họ tên không được rỗng',
+                'fullname.max'=>'Họ tên không quá 30 kí tự',
+                'address.required'=>'Vui lòng nhập địa chỉ',
+                'email.email'=>'Không đúng định dạng email',
+                'phone.numeric'=>'Số đt là số'
+            ]
+        );
+
+        $cart = Session::get('cart');
+
+        $customer = new Customer;
+        $customer->name = $req->fullname;
+        $customer->gender = '-';
+        $customer->email = $req->email;
+        $customer->address = $req->address;
+        $customer->phone_number = $req->phone;
+        $customer->note  = $req->notes;
+        $customer->save();
+        if($customer){
+            $bill = new Bills;
+            $bill->id_customer = $customer->id;
+            $bill->date_order = date('Y-m-d');
+            $bill->total = $cart->totalPrice;
+            $bill->payment = $req->payment_method;
+            $bill->note = $req->notes;
+            $bill->save();
+            if($bill){
+                foreach($cart->items as $item){
+                    $bill_detail = new BillDetail;
+                    $bill_detail->id_bill = $bill->id;
+                    $bill_detail->id_product = $item['item']->id;
+                    $bill_detail->quantity = $item['qty'];
+                    $bill_detail->unit_price = $item['item']->promotion_price;
+                    $bill_detail->save();
+                }
+            }
+
+           
+            Mail::send('pages.xacnhan_cart', ['cart' => $cart], function ($message) use($req)
+            {
+                $message->from('huonghuong08.php@gmail.com', 'Hương Hương');
+                $message->to($req->email,$req->fullname);
+                $message->subject('Xác nhận đơn hàng');
+            });
+
+
+            $req->session()->forget('cart');
+
+            return redirect()->route('trangchu');
+        }
+
+    }
+/*
+
+
+<p><img alt="" src="/public/images/20228779_1119591398185561_8237886134628969716_n.jpg" style="height:113px; width:200px" /></p>
+
+<p>H&igrave;nh v&iacute; dụ</p>
+
+
+
+*/
+
 
     public function getLogin(){
     	return view('pages.login');
@@ -101,5 +184,25 @@ class PageController extends Controller
             }
             return redirect()->back();
         }
+    }
+
+    public function editCart(Request $req){
+        //echo $req->idSP; die;
+        $product = Products::where('id',$req->idSP)->first();
+        if($product){
+
+            $oldCart = Session::has('cart')?Session::get('cart'):null;
+            $cart = new Cart($oldCart);
+
+            $cart->removeItem($req->idSP);
+            $req->session()->put('cart',$cart);
+
+            $oldCart = Session::has('cart')?Session::get('cart'):null;
+            $cart = new Cart($oldCart);
+            $cart->add($product, $req->idSP, (int)$req->soluong);
+            $req->session()->put('cart',$cart);
+            echo number_format($cart->totalPrice).' vnđ';
+        }
+
     }
 }

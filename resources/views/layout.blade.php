@@ -14,6 +14,9 @@
 	<link rel="stylesheet" title="style" href="assets/dest/css/style.css">
 	<link rel="stylesheet" href="assets/dest/css/animate.css">
 	<link rel="stylesheet" title="style" href="assets/dest/css/huong-style.css">
+
+	<script src="ck/ckeditor/ckeditor.js"></script>
+	<script src="ck/ckfinder/ckfinder.js"></script>
 </head>
 <body>
 
@@ -63,13 +66,13 @@
 							{{-- {{dd($product_cart)}} --}}
 							<div class="beta-dropdown cart-body">
 								@foreach($product_cart as $sanpham)
-								<div class="cart-item" id="del_{{$sanpham['item']->id)}}">
+								<div class="cart-item" id="del_{{$sanpham['item']->id}}">
 									<div class="media">
 										<a class="pull-left" href="#"><img src="image/product/{{$sanpham['item']->image}}" alt=""></a>
 										<a class="cart-item-delete" href="{{route('delete_cart',$sanpham['item']->id)}}"><i class="fa fa-times"></i></a>
 										<div class="media-body">
 											<span class="cart-item-title">{{$sanpham['item']->name}}</span>
-											<span class="cart-item-amount">{{$sanpham['qty']}}*<span>{{number_format($sanpham['item']->promotion_price)}} vnđ</span></span>
+											<span class="cart-item-amount"><span id="soluong_{{$sanpham['item']->id}}">{{$sanpham['qty']}}</span>*<span>{{number_format($sanpham['item']->promotion_price)}} vnđ</span></span>
 										</div>
 									</div>
 								</div>
@@ -77,7 +80,7 @@
 
 
 								<div class="cart-caption">
-									<div class="cart-total text-right">Tổng tiền: <span class="cart-total-value">{{number_format($totalPrice)}} vnđ</span></div>
+									<div class="cart-total text-right">Tổng tiền: <span class="cart-total-value" id="tongtien">{{number_format($totalPrice)}} vnđ</span></div>
 									<div class="clearfix"></div>
 
 									<div class="center">

@@ -50,7 +50,7 @@
 							<td class="product-quantity">
 								<select class=" form-control soluong" dataID="{{$c['item']['id']}}">
 									@for($i=1; $i<=10; $i++)
-									<option value="{{$i}}">{{$i}}</option>
+									<option value="{{$i}}" @if($c['qty']==$i) selected @endif>{{$i}}</option>
 									@endfor
 								</select>
 							</td>
@@ -79,9 +79,9 @@
 				
 
 				<div class="cart-totals pull-right">
-					<div class="cart-totals-row"><span>Tổng cộng:</span> <span>{{number_format($cart->totalPrice)}} vnđ</span></div>
+					<div class="cart-totals-row"><span>Tổng cộng:</span> <span id="totalPrice" >{{number_format($cart->totalPrice)}} vnđ</span></div>
 					<div class="cart-totals-row">
-						<button class="beta-btn primary" style="width: 100%">Đặt hàng</button>
+						<a href="{{route('checkout')}}"><button class="beta-btn primary" style="width: 100%">Đặt hàng</button></a>
 					</div>
 				</div>
 
@@ -102,12 +102,34 @@
 
 			var dongia = $('#dongia_'+idSP).attr('dongia')
 
+			$.ajax({
+				url:"{{route('edit_cart')}}",
+				data:{
+					idSP:idSP,
+					soluong:soluong,
+					_token:"{{csrf_token()}}"
+				},
+				type:"POST",
+				success:function(data){
+					$('#totalPrice').html(data)
+					$('#tongtien').html(data); //cho giỏ hàng ở header
+				},
+				error:function(){
+					console.log('err')
+				}
+			})
 
-
-			
 			// console.log(dongia)
 			var total = soluong*dongia ;
+			total = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 			$('#total_'+idSP).html(total+' vnđ')
+
+
+			$('#soluong_'+idSP).html(soluong)//cho giỏ hàng ở header
+			
+
+
+
 
 		});
 	})

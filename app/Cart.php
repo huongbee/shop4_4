@@ -31,7 +31,7 @@ class Cart
 		$sanpham['price'] = $item->promotion_price * $sanpham['qty'];
 		$this->items[$id] = $sanpham;
 		$this->totalQty = $this->totalQty + $qty;
-		$this->totalPrice = ($this->totalPrice + $sanpham['item']->promotion_price);
+		$this->totalPrice = ($this->totalPrice + ($sanpham['item']->promotion_price*$qty));
 		
 	}
 	//xóa 1

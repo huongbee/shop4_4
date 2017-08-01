@@ -37,6 +37,12 @@ Route::get('checkout',[
 	'uses'=>'PageController@getCheckout'
 ]);
 
+Route::post('checkout',[
+	'as'=>'checkout',
+	'uses'=>'PageController@postCheckout'
+]);
+
+
 Route::get('shopping-cart',[
 	'as'=>'shoppingcart',
 	'uses'=>'PageController@getShoppingCart'
@@ -62,4 +68,10 @@ Route::get('add-to-cart/{id}',[
 Route::get('delete-cart/{id}',[
 	'as'=>'delete_cart',
 	'uses'=>'PageController@deleteCart'
+]);
+
+
+Route::post('edit-cart',[
+	'as'=>'edit_cart',
+	'uses'=>'PageController@editCart'
 ]);

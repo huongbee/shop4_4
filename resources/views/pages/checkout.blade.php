@@ -16,118 +16,92 @@
 	
 	<div class="container">
 		<div id="content">
-			
-			<form action="#" method="post" class="beta-form-checkout">
+			@if(count($errors)>0)
+				<div class="alert alert-danger">
+					<ul>
+					@foreach($errors->all() as $err)
+						<li>{{$err}}</li>
+					@endforeach
+					</ul>
+				</div>
+			@endif
+			<form action="{{route('checkout')}}" method="post" class="beta-form-checkout">
+				{{csrf_field()}}
+
 				<div class="row">
 					<div class="col-sm-6">
-						<h4>Billing Address</h4>
+						<h4>Thông tin đặt hàng</h4>
 						<div class="space20">&nbsp;</div>
 
 						<div class="form-block">
-							<label for="your_first_name">First name*</label>
-							<input type="text" id="your_first_name" required>
-						</div>
-
-						<div class="form-block">
-							<label for="your_last_name">Last name*</label>
-							<input type="text" id="your_last_name" required>
-						</div>
-
-						<div class="form-block">
-							<label for="company">Company name</label>
-							<input type="text" id="company">
+							<label for="your_first_name">Họ tên*</label>
+							<input type="text" name="fullname" required>
 						</div>
 
 						<div class="form-block">
 							<label for="adress">Address*</label>
-							<input type="text" id="adress" value="Street Address" required>
-							<input type="text" id="apartment" value="Apartment, suite, unit etc." required>
+							<input type="text" name="address" required placeholder="90 Lê Thị Riêng, P.Bến Thành, Quận 1">
+							
 						</div>
-
-						<div class="form-block">
-							<label for="town_city">Town / City*</label>
-							<input type="text" id="town_city" required value="Town / City*">
-						</div>
-
-						<div class="form-block">
-							<label for="country/state">Country</label>
-							<input type="text" id="country/state" value="State / Country">
-						</div>
-
 						<div class="form-block">
 							<label for="email">Email address*</label>
-							<input type="email" id="email" required>
+							<input type="email" name="email" required>
 						</div>
 
 						<div class="form-block">
 							<label for="phone">Phone*</label>
-							<input type="text" id="phone" required>
+							<input type="text" name="phone" required>
 						</div>
 						
 						<div class="form-block">
 							<label for="notes">Order notes</label>
-							<textarea id="notes"></textarea>
+							<textarea name="notes"></textarea>
+							<script>
+								CKEDITOR.replace('notes')
+							</script>
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="your-order">
 							<div class="your-order-head"><h5>Giỏ hàng</h5></div>
 							<div class="your-order-body">
-								<div class="your-order-item">
-									<div>
-
-									<!--  one item	 -->
 									
-										<div class="media">
-											<img width="35%" src="assets/dest/images/shoping1.jpg" alt="" class="pull-left">
-											<div class="media-body">
-												<p class="font-large">Men's Belt</p>
-												<span class="color-gray your-order-info">Color: Red</span>
-												<span class="color-gray your-order-info">Size: M</span>
-												<span class="color-gray your-order-info">Qty: 1</span>
-											</div>
-										</div>
-									<!-- end one item -->
-									</div>
-									<div class="clearfix"></div>
-								</div>
 								<div class="your-order-item">
 									<div class="pull-left"><p class="your-order-f18">Total:</p></div>
-									<div class="pull-right"><h5 class="color-black">$235.00</h5></div>
-									<div class="clearfix"></div>
+									<div class="pull-right"><h5 class="color-black">{{number_format($totalPrice)}} vnđ</h5></div>
 								</div>
 							</div>
-							<div class="your-order-head"><h5>Payment Method</h5></div>
+							<div class="your-order-head"><h5>Hình thức thanh toán</h5></div>
 							
 							<div class="your-order-body">
 								<ul class="payment_methods methods">
 									<li class="payment_method_bacs">
-										<input id="payment_method_bacs" type="radio" class="input-radio" name="payment_method" value="bacs" checked="checked" data-order_button_text="">
-										<label for="payment_method_bacs">Direct Bank Transfer </label>
+										<input id="payment_method_bacs" type="radio" class="input-radio" name="payment_method" value="COD" checked="checked" data-order_button_text="">
+										<label for="payment_method_bacs">COD</label>
 										<div class="payment_box payment_method_bacs" style="display: block;">
-											Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.
+											Bạn gửi tiền vào tài khoản số :12345678, Hệ thống sẽ kiểm tra rồi ship hàng đến địa chỉ bạn cung cấp
 										</div>						
 									</li>
 
 									<li class="payment_method_cheque">
-										<input id="payment_method_cheque" type="radio" class="input-radio" name="payment_method" value="cheque" data-order_button_text="">
-										<label for="payment_method_cheque">Cheque Payment </label>
+										<input id="payment_method_cheque" type="radio" class="input-radio" name="payment_method" value="Thanh toán trực tiếp" data-order_button_text="">
+										<label for="payment_method_cheque">Thanh toán trực tiếp</label>
 										<div class="payment_box payment_method_cheque" style="display: none;">
-											Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.
+											Sau khi nhân viên giao hàng gửi hàng đến địa chỉ bạn cũng cấp, thì bạn gửi gửi tienf thanh toán lại cho nhân viên
 										</div>						
 									</li>
 									
 									<li class="payment_method_paypal">
-										<input id="payment_method_paypal" type="radio" class="input-radio" name="payment_method" value="paypal" data-order_button_text="Proceed to PayPal">
-										<label for="payment_method_paypal">PayPal</label>
+										<input id="payment_method_paypal" type="radio" class="input-radio" name="payment_method" value="Đặt giữ hàng tại cửa hàng" data-order_button_text="Proceed to PayPal">
+										<label for="payment_method_paypal">Đặt giữ hàng tại của hàng</label>
 										<div class="payment_box payment_method_paypal" style="display: none;">
-											Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account
+											Hệ thống sẽ giữ đơn hàng của bạn có giá trị trong suốt 12 giờ sau bạn xác nhận đơn hàng. Sau 12 giờ, nếu bạn không đến nhận hàng thì đơn hàng bị hủy
 										</div>						
 									</li>
 								</ul>
 							</div>
 
-							<div class="text-center"><a class="beta-btn primary" href="#">Checkout <i class="fa fa-chevron-right"></i></a></div>
+							<div class="text-center"><button type="submit" class="beta-btn primary">Checkout <i class="fa fa-chevron-right"></i></button></div>
 						</div> <!-- .your-order -->
 					</div>
 				</div>
