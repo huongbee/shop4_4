@@ -37,7 +37,7 @@
 						<tr class="cart_item">
 							<td class="product-name">
 								<div class="media">
-									<img src="image/product/{{$c['item']['image']}}" width="80px">
+									<img src="shopping/image/product/{{$c['item']['image']}}" width="80px">
 									<div>
 										<p class="font-large table-title">{{$c['item']['name']}}</p>
 									</div>

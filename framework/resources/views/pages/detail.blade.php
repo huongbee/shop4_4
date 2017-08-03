@@ -21,7 +21,7 @@
 
 					<div class="row">
 						<div class="col-sm-4">
-							<img src="image/product/{{$product->image}}" alt="">
+							<img src="shopping/image/product/{{$product->image}}" alt="">
 						</div>
 						<div class="col-sm-8">
 							<div class="single-item-body">
@@ -87,7 +87,7 @@
 										<div class="ribbon-wrapper"><div class="ribbon sale">Sale</div></div>
 										@endif
 										<div class="single-item-header">
-											<a href="product.html"><img src="image/product/{{$new->image}}" alt="" style="height: 250px"></a>
+											<a href="product.html"><img src="shopping/image/product/{{$new->image}}" alt="" style="height: 250px"></a>
 										</div>
 										<div class="single-item-body">
 											<p class="single-item-title">{{$new->name}}</p>
@@ -119,7 +119,7 @@
 							<div class="beta-sales beta-lists">
 							@foreach($best_seller as $bs)
 								<div class="media beta-sales-item">
-									<a class="pull-left" href="product.html"><img src="image/product/{{$bs->image}}" alt=""></a>
+									<a class="pull-left" href="product.html"><img src="shopping/image/product/{{$bs->image}}" alt=""></a>
 									<div class="media-body">
 										{{$bs->name}}
 										<span class="beta-sales-price">$34.55</span>

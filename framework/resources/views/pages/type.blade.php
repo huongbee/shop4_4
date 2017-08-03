@@ -7,7 +7,7 @@
 			</div>
 			<div class="pull-right">
 				<div class="beta-breadcrumb font-large">
-					<a href="index.html">Home</a> / <span>Sản phẩm</span>
+					<a href=".">Home</a> / <span>Sản phẩm</span>
 				</div>
 			</div>
 			<div class="clearfix"></div>
@@ -43,7 +43,7 @@
 										<div class="ribbon-wrapper"><div class="ribbon sale">Sale</div></div>
 										@endif
 										<div class="single-item-header">
-											<a href="product.html"><img src="image/product/{{$new->image}}" alt="" style="height: 250px"></a>
+											<a href="product.html"><img src="shopping/image/product/{{$new->image}}" alt="" style="height: 250px"></a>
 										</div>
 										<div class="single-item-body">
 											<p class="single-item-title">{{$new->name}}</p>
