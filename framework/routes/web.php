@@ -75,3 +75,15 @@ Route::post('edit-cart',[
 	'as'=>'edit_cart',
 	'uses'=>'PageController@editCart'
 ]);
+
+
+Route::get('xac-nhan-don-hang/{id_bill}',[
+	'as'=>'accept_cart',
+	'uses'=>'PageController@getAcceptCart'
+]);
+
+
+Route::post('xac-nhan-don-hang/{id_bill}',[
+	'as'=>'accept_cart',
+	'uses'=>'PageController@postAcceptCart'
+]);

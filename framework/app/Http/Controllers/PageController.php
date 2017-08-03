@@ -12,6 +12,7 @@ use App\Customer;
 use App\Bills;
 use App\BillDetail;
 use Mail;
+use DB;
 
 class PageController extends Controller
 {
@@ -61,9 +62,7 @@ class PageController extends Controller
 
     public function getCheckout(){
         $cart = Session::has('cart')?Session::get('cart'):null;
-        if($cart == null){
-            return redirect()->route('trangchu');
-        }
+        
     	return view('pages.checkout');
     }
 
@@ -88,58 +87,76 @@ class PageController extends Controller
 
         $cart = Session::get('cart');
 
-        $customer = new Customer;
-        $customer->name = $req->fullname;
-        $customer->gender = '-';
-        $customer->email = $req->email;
-        $customer->address = $req->address;
-        $customer->phone_number = $req->phone;
-        $customer->note  = $req->notes;
-        $customer->save();
-        if($customer){
-            $bill = new Bills;
-            $bill->id_customer = $customer->id;
-            $bill->date_order = date('Y-m-d');
-            $bill->total = $cart->totalPrice;
-            $bill->payment = $req->payment_method;
-            $bill->note = $req->notes;
-            $bill->save();
-            if($bill){
-                foreach($cart->items as $item){
-                    $bill_detail = new BillDetail;
-                    $bill_detail->id_bill = $bill->id;
-                    $bill_detail->id_product = $item['item']->id;
-                    $bill_detail->quantity = $item['qty'];
-                    $bill_detail->unit_price = $item['item']->promotion_price;
-                    $bill_detail->save();
+        ///DB::transaction(function () use ($req,$cart){
+        DB::beginTransaction();
+        try{
+            $customer = new Customer;
+            $customer->name = $req->fullname;
+            $customer->gender = '-';
+            $customer->email = $req->email;
+            $customer->address = $req->address;
+            $customer->phone_number = $req->phone;
+            $customer->note  = $req->notes;
+            $customer->save();
+            if($customer){
+                $ma_xacnhan = rand(100000,999999);
+                $bill = new Bills;
+                $bill->id_customer = $customer->id;
+                $bill->date_order = date('Y-m-d');
+                $bill->total = $cart->totalPrice;
+                $bill->payment = $req->payment_method;
+                $bill->maxacnhan = $ma_xacnhan;
+                $bill->note = $req->notes;
+                $bill->save();
+                if($bill){
+                    foreach($cart->items as $item){
+                        $bill_detail = new BillDetail;
+                        $bill_detail->id_bill = $bill->id;
+                        $bill_detail->id_product = $item['item']->id;
+                        $bill_detail->quantity = $item['qty'];
+                        $bill_detail->unit_price = $item['item']->promotion_price;
+                        $bill_detail->save();
+                    }
                 }
+
+               
+                Mail::send('pages.xacnhan_cart', [  'cart' => $cart,
+                                                    'ma_xacnhan'=>$ma_xacnhan, 
+                                                    'id_bill'=>$bill->id],
+                                                function ($message) use($req)
+                {
+                    $message->from('huonghuong08.php@gmail.com', 'Hương Hương');
+                    $message->to($req->email,$req->fullname);
+                    $message->subject('Xác nhận đơn hàng');
+                });
+
+                DB::commit();
+
+                $req->session()->forget('cart');
+
+                return redirect()->back()->with('thanhcong','Đặt hàng thành công. Vui lòng kiểm tra email để xác nhận đơn hàng');
             }
-
-           
-            Mail::send('pages.xacnhan_cart', ['cart' => $cart], function ($message) use($req)
-            {
-                $message->from('huonghuong08.php@gmail.com', 'Hương Hương');
-                $message->to($req->email,$req->fullname);
-                $message->subject('Xác nhận đơn hàng');
-            });
-
-
-            $req->session()->forget('cart');
-
-            return redirect()->route('trangchu');
+        }catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
         }
-
     }
-/*
 
+    public function getAcceptCart($id_bill){
+        return view('pages.form_accept',compact('id_bill'));
+    }
 
-<p><img alt="" src="/public/images/20228779_1119591398185561_8237886134628969716_n.jpg" style="height:113px; width:200px" /></p>
-
-<p>H&igrave;nh v&iacute; dụ</p>
-
-
-
-*/
+    public function postAcceptCart(Request $req){
+        $bill = Bills::where('id',$req->id_bill)->first();
+        if($bill && $bill->maxacnhan == $req->maxacnhan){
+            $bill->customer_checked = 1;
+            $bill->save();
+            return redirect()->back()->with('thanhcong','Xác nhận đơn hàng thành công.');
+        }
+        else{
+            return redirect()->back()->with('error','Mã xác nhận không đúng.');
+        }
+    }
 
 
     public function getLogin(){

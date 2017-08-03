@@ -25,6 +25,9 @@
 					</ul>
 				</div>
 			@endif
+			@if(Session::has('thanhcong'))
+				<div class="alert alert-success">{{Session::get('thanhcong')}}</div>
+			@endif
 			<form action="{{route('checkout')}}" method="post" class="beta-form-checkout">
 				{{csrf_field()}}
 
@@ -68,7 +71,7 @@
 									
 								<div class="your-order-item">
 									<div class="pull-left"><p class="your-order-f18">Total:</p></div>
-									<div class="pull-right"><h5 class="color-black">{{number_format($totalPrice)}} vnđ</h5></div>
+									<div class="pull-right"><h5 class="color-black">@if(Session::has('cart')){{number_format($totalPrice)}} @else 0 @endif vnđ</h5></div>
 								</div>
 							</div>
 							<div class="your-order-head"><h5>Hình thức thanh toán</h5></div>
