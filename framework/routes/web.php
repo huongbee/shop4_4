@@ -87,3 +87,27 @@ Route::post('xac-nhan-don-hang/{id_bill}',[
 	'as'=>'accept_cart',
 	'uses'=>'PageController@postAcceptCart'
 ]);
+
+
+
+Route::get('admin-login',[
+	'as'=>'admin.login',
+	'uses'=>'AdminController@getLogin'
+]);
+Route::post('admin-login',[
+	'as'=>'admin.login',
+	'uses'=>'AdminController@postLogin'
+]);
+
+
+Route::group(['prefix'=>'admin'],function(){
+
+	Route::get('list-type',[
+		'as'=>'ds_loaisp',
+		'uses'=>'AdminController@getListType'
+	]);
+
+
+
+
+});
