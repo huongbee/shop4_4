@@ -100,14 +100,24 @@ Route::post('admin-login',[
 ]);
 
 
-Route::group(['prefix'=>'admin'],function(){
+Route::group(['prefix'=>'admin','middleware'=>'checkAdminLogin'],function(){
 
 	Route::get('list-type',[
 		'as'=>'ds_loaisp',
 		'uses'=>'AdminController@getListType'
 	]);
 
+	Route::get('edit-type/{id}',[
+		'as'=>'edit_loaisp',
+		'uses'=>'AdminController@getEditType'
+	]);
 
 
+
+
+	Route::get('logout',[
+		'as'=>'admin.logout',
+		'uses'=>'AdminController@getOut'
+	]);
 
 });

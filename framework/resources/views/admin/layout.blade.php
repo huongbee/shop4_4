@@ -29,8 +29,8 @@
     <link href="admin_theme/css/style.css" rel="stylesheet">
     <link href="admin_theme/css/style-responsive.css" rel="stylesheet" />
 
-
-
+    <script src="ck/ckeditor/ckeditor.js"></script>
+    <script src="ck/ckfinder/ckfinder.js"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
     <!--[if lt IE 9]>
       <script src="admin_theme/js/html5shiv.js"></script>
@@ -266,7 +266,7 @@
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <img alt="" src="admin_theme/img/avatar1_small.jpg">
-                            <span class="username">Jhon Doue</span>
+                            <span class="username">{{Auth::guard('admin')->user()->full_name}}</span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu extended logout">
@@ -274,7 +274,7 @@
                             <li><a href="#"><i class=" fa fa-suitcase"></i>Profile</a></li>
                             <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
                             <li><a href="#"><i class="fa fa-bell-o"></i> Notification</a></li>
-                            <li><a href="login.html"><i class="fa fa-key"></i> Log Out</a></li>
+                            <li><a href="{{route('admin.logout')}}"><i class="fa fa-key"></i> Log Out</a></li>
                         </ul>
                     </li>
                     <!-- user login dropdown end -->

@@ -4,10 +4,7 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
-	var pathArray = location.href.split( '/' );
-	var protocol = pathArray[0];
-	var host = pathArray[2];
-	var url = protocol + '//' + host;
+	
 	// Define changes to default configuration here.
 	// For complete reference see:
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
@@ -39,10 +36,10 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
-	config.filebrowserBrowseUrl=url+'/shop4_4/ck/ckfinder/ckfinder.html';
-	config.filebrowserImageBrowseUrl=url+'/shop4_4/ck/ckfinder/ckfinder.html?type=Images';
-	config.filebrowserFlashBrowseUrl=url+'/shop4_4/ck/ckfinder/ckfinder.html?type=Flash';
-	config.filebrowserUploadUrl= url+'/shop4_4/ck/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
-	config.filebrowserImageUploadUrl=url+'/shop4_4/ck/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
-	config.filebrowserFlashUploadUrl=url+'/shop4_4/ck/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash';
+	config.filebrowserBrowseUrl='ck/ckfinder/ckfinder.html';
+	config.filebrowserImageBrowseUrl='../../ck/ckfinder/ckfinder.html?type=Images';
+	config.filebrowserFlashBrowseUrl='../../ck/ckfinder/ckfinder.html?type=Flash';
+	config.filebrowserUploadUrl= '../../ck/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
+	config.filebrowserImageUploadUrl='../../ck/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
+	config.filebrowserFlashUploadUrl='../../ck/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash';
 };
