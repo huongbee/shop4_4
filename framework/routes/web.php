@@ -112,6 +112,15 @@ Route::group(['prefix'=>'admin','middleware'=>'checkAdminLogin'],function(){
 		'uses'=>'AdminController@getEditType'
 	]);
 
+	Route::post('edit-type/{id}',[
+		'as'=>'edit_loaisp',
+		'uses'=>'AdminController@postEditType'
+	]);
+
+	Route::get('detele-type/{id}',[
+		'as'=>'detele_loaisp',
+		'uses'=>'AdminController@getDeleteType'
+	]);
 
 
 

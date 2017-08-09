@@ -4,6 +4,12 @@
         <div class="panel-heading"><b>Danh sách loại SP</b>
         </div>
         <div class="panel-body">
+        @if(Session::has('loi'))
+        	<div class="alert alert-danger">{{Session::get('loi')}}</div>
+        @endif
+        @if(Session::has('thanhcong'))
+        	<div class="alert alert-success">{{Session::get('thanhcong')}}</div>
+        @endif
              <table class="table table-hover">
 		    <thead>
 		      <tr>
@@ -21,14 +27,14 @@
 		      <tr>
 		        <td>{{$stt}}</td>
 		        <td>{{$type->name}}</td>
-		        <td width="35%">{{$type->description}}</td>
+		        <td width="35%"><?=$type->description;?></td>
 		        <td><img src="shopping/image/product/{{$type->image}}" width="150px"></td>
 		        <td><a href=""><button class="btn  btn-success">Xem danh sách sp</button></a></td>
 		        <td>
 		        	<a href="{{route('edit_loaisp',$type->id)}}">
 		        		<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
 		        	</a>
-		        	<i class="fa fa-trash-o fa-2x" aria-hidden="true"></i>
+		        	<a href="{{route('detele_loaisp',$type->id)}}"><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></a>
 		        </td>
 		      </tr>
 		      <?php $stt++;?>
